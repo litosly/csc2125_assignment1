@@ -116,7 +116,7 @@ def get_avatar(filename):
 
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
-@confirm_required
+# @confirm_required
 @permission_required('UPLOAD')
 def upload():
     if request.method == 'POST' and 'file' in request.files:
