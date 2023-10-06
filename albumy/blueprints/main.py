@@ -345,16 +345,47 @@ def edit_description(photo_id):
     return redirect(url_for(".show_photo", photo_id=photo_id))
 
 
-# @main_bp.route("/photo/<int:photo_id>/alt_text", methods=["POST"])
-# @login_required
-# def generate_alt_text(photo_id):
-#     photo = Photo.query.get_or_404(photo_id)
-#     if current_user != photo.author and not current_user.can("MODERATE"):
-#         abort(403)
-#     photo.description = predict()
-#     db.session.commit()
-#     flash("Alt text updated.", "success")
-#     return redirect(url_for(".show_photo", photo_id=photo_id))
+@main_bp.route("/alt_text/<int:photo_id>", methods=["POST"])
+@login_required
+def update_alt_text(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    if current_user != photo.author and not current_user.can("MODERATE"):
+        print("User does not have permission to update photo description")
+        abort(403)
+    path = current_app.config["ALBUMY_UPLOAD_PATH"] + "/" + photo.filename
+    description = generate_image_caption(path)
+    if description:
+        alt_text = description[0]["generated_text"]
+    else:
+        print("Automatic Alt Text Generation Failed")
+        alt_text = ""
+
+    photo.description = alt_text
+    db.session.commit()
+    flash("Alt text updated.", "success")
+    return redirect(url_for(".show_photo", photo_id=photo_id))
+
+
+@main_bp.route("/add_automatic_tags/<int:photo_id>", methods=["POST"])
+@login_required
+def add_automatic_tags(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    if current_user != photo.author and not current_user.can("MODERATE"):
+        print("User does not have permission to add photo tags")
+        abort(403)
+    path = current_app.config["ALBUMY_UPLOAD_PATH"] + "/" + photo.filename
+    tags = generate_image_tags(path)
+    for name in tags:
+        tag = Tag.query.filter_by(name=name).first()
+        if tag is None:
+            tag = Tag(name=name)
+            db.session.add(tag)
+            db.session.commit()
+        if tag not in photo.tags:
+            photo.tags.append(tag)
+            db.session.commit()
+    flash("Tag added.", "success")
+    return redirect(url_for(".show_photo", photo_id=photo_id))
 
 
 @main_bp.route("/photo/<int:photo_id>/comment/new", methods=["POST"])
