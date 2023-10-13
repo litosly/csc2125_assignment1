@@ -223,7 +223,7 @@ tagging = db.Table('tagging',
                    )
 
 
-@whooshee.register_model('description')
+@whooshee.register_model('description, hidden_tags')
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(500))

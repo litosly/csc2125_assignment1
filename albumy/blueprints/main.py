@@ -172,20 +172,19 @@ def upload():
         else:
             print("Automatic Alt Text Generation Failed")
             alt_text = ""
-        hidden_tags = generate_image_tags(file_location)
+        tags = generate_image_tags(file_location)
         # Create and Upload photo
         photo = Photo(
             filename=filename,
             filename_s=filename_s,
             filename_m=filename_m,
             description=alt_text,
-            hidden_tags = " ".join(hidden_tags),
+            hidden_tags = " ".join(tags),
             author=current_user._get_current_object(),
         )
         db.session.add(photo)
         db.session.commit()
         # Generate tags
-        tags = generate_image_tags(file_location)
         for name in tags:
             tag = Tag.query.filter_by(name=name).first()
             if tag is None:
