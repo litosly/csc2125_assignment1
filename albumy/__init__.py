@@ -20,6 +20,7 @@ from albumy.blueprints.user import user_bp
 from albumy.extensions import bootstrap, db, login_manager, mail, dropzone, moment, whooshee, avatars, csrf
 from albumy.models import Role, User, Photo, Tag, Follow, Notification, Comment, Collect, Permission
 from albumy.settings import config
+from flask_whooshee import Whooshee
 
 
 def create_app(config_name=None):
@@ -36,7 +37,6 @@ def create_app(config_name=None):
     register_errorhandlers(app)
     register_shell_context(app)
     register_template_context(app)
-
     return app
 
 
@@ -141,6 +141,8 @@ def register_commands(app):
 
         db.drop_all()
         db.create_all()
+        whooshee = Whooshee(app)
+        whooshee.reindex()
 
         click.echo('Initializing the roles and permissions...')
         Role.init_role()

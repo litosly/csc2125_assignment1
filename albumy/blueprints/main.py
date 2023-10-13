@@ -376,6 +376,7 @@ def add_automatic_tags(photo_id):
         abort(403)
     path = current_app.config["ALBUMY_UPLOAD_PATH"] + "/" + photo.filename
     tags = generate_image_tags(path)
+    photo.hidden_tags = " ".join(tags)
     for name in tags:
         tag = Tag.query.filter_by(name=name).first()
         if tag is None:
