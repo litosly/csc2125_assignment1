@@ -81,6 +81,7 @@ def fake_photo(count=30):
 
         photo = Photo(
             description=fake.text(),
+            hidden_tags=fake.text(),
             filename=filename,
             filename_m=filename,
             filename_s=filename,

@@ -223,10 +223,13 @@ tagging = db.Table('tagging',
                    )
 
 
-@whooshee.register_model('description')
+# Must delete existing whooshee folder to add new field in the whooshee schema, 
+#       otherwise register_model will cause Error
+@whooshee.register_model('description', 'hidden_tags')
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(500))
+    hidden_tags = db.Column(db.Text)
     filename = db.Column(db.String(64))
     filename_s = db.Column(db.String(64))
     filename_m = db.Column(db.String(64))
