@@ -1,21 +1,11 @@
 # API
 https://huggingface.co/spaces/SRDdev/Image-Caption 
 
-# Albumy
-
-*Capture and share every wonderful moment.*
-
-> Example application for *[Python Web Development with Flask](https://helloflask.com/en/book/1)* (《[Flask Web 开发实战](https://helloflask.com/book/1)》).
-
-Demo: http://albumy.helloflask.com
-
-![Screenshot](https://helloflask.com/screenshots/albumy.png)
-
 ## Installation
 
 clone:
 ```
-$ git clone https://github.com/greyli/albumy.git
+$ git clone https://github.com/litosly/csc2125_assignment1.git
 $ cd albumy
 ```
 create & activate virtual env then install dependency:
@@ -42,6 +32,4 @@ Test account:
 * password: `helloflask`
 
 ## License
-
-This project is licensed under the MIT License (see the
-[LICENSE](LICENSE) file for details).
+Same license as the original albumy repository 
